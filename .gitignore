@@ -1,5 +1,4 @@
-﻿.venv/
+.venv/
 __pycache__/
 .ipynb_checkpoints/
-
-Add-Content .gitignore "*.egg-info/"
+*.egg-info/
