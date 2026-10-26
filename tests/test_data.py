@@ -1,6 +1,7 @@
 import pandas as pd
+import pytest
 
-from boh.data import apply_champion_labels, load_raw
+from boh.data import CHAMPIONS, apply_champion_labels, load_raw
 
 
 constructor_df = load_raw()["constructor_finances"]
@@ -25,3 +26,10 @@ def test_input_is_not_changed():
     before = constructor_df.copy()
     apply_champion_labels(constructor_df)
     pd.testing.assert_frame_equal(constructor_df, before)
+    
+def test_unknown_team_in_champions_raises():
+    cf = load_raw()["constructor_finances"]
+    broken = {**CHAMPIONS, 2010: "Red Bull"}
+    
+    with pytest.raises(ValueError, match="Red Bull"):
+        apply_champion_labels(cf, broken)
