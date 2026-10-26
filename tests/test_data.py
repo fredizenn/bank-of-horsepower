@@ -33,3 +33,14 @@ def test_unknown_team_in_champions_raises():
     
     with pytest.raises(ValueError, match="Red Bull"):
         apply_champion_labels(cf, broken)
+ 
+def test_cost_cap_present_from_2021():
+    cf = load_raw()["constructor_finances"]
+    cap_era = cf[cf["season"] >= 2021]
+    assert cap_era["cost_cap_limit_usd_m"].notna().all()  
+    
+def test_cost_cap_missing_before_2021():
+    cf = load_raw()["constructor_finances"]
+    pre_cap = cf[cf["season"] < 2021]
+    assert pre_cap["cost_cap_limit_usd_m"].isna().all()
+    
